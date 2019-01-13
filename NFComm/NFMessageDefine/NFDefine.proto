@@ -118,6 +118,10 @@ enum EGameMsgID
 	EGMI_ACK_LOAD_ROLE_DATA						= 141;			//
 	EGMI_REQ_SAVE_ROLE_DATA						= 142;			//
 	EGMI_ACK_SAVE_ROLE_DATA						= 143;			//
+	EGMI_REQ_LOAD_OBJ_DATA						= 144;			//
+	EGMI_ACK_LOAD_OBJ_DATA						= 145;			//
+	EGMI_REQ_SAVE_OBJ_DATA						= 146;			//
+	EGMI_ACK_SAVE_OBJ_DATA						= 147;			//
 
 	EGMI_REQ_ENTER_GAME							= 150;			//
 	EGMI_ACK_ENTER_GAME							= 151;			//

@@ -25,6 +25,7 @@
 
 #include "NFCDBNet_ServerModule.h"
 #include "../NFDBLogicPlugin/NFCPlayerRedisModule.h"
+#include "../NFDBMysqlLogicPlugin/NFCCommonMysqlModule.h"
 #include "NFComm/NFMessageDefine/NFMsgDefine.h"
 #include "NFComm/NFMessageDefine/NFProtocolDefine.hpp"
 
@@ -38,6 +39,8 @@ bool NFCDBNet_ServerModule::Init()
 	m_pNetClientModule = pPluginManager->FindModule<NFINetClientModule>();
 	m_pAccountRedisModule = pPluginManager->FindModule<NFIAccountRedisModule>();
 	m_pPlayerRedisModule = pPluginManager->FindModule<NFIPlayerRedisModule>();
+	m_pCommonMysqlModule = pPluginManager->FindModule<NFICommonMysqlModule>();
+	m_pMysqlModule = pPluginManager->FindModule<NFIMysqlModule>();
 	
     return true;
 }
@@ -80,11 +83,46 @@ bool NFCDBNet_ServerModule::AfterInit()
         }
     }
 
+	xLogicClass = m_pClassModule->GetElement(NFrame::SqlServer::ThisName());
+	if (xLogicClass)
+	{
+		const std::vector<std::string>& strIdList = xLogicClass->GetIDList();
+		for (int i = 0; i < strIdList.size(); ++i)
+		{
+			const std::string& strId = strIdList[i];
+
+			const int nServerID = m_pElementModule->GetPropertyInt32(strId, NFrame::SqlServer::ServerID());
+			if (pPluginManager->GetAppID() == nServerID)
+			{
+				const int nPort = m_pElementModule->GetPropertyInt32(strId, NFrame::SqlServer::Port());
+				const int nSqlPort = m_pElementModule->GetPropertyInt32(strId, NFrame::SqlServer::SqlPort());
+				const std::string& strIP = m_pElementModule->GetPropertyString(strId, NFrame::SqlServer::IP());
+				const std::string& strSqlIP = m_pElementModule->GetPropertyString(strId, NFrame::SqlServer::SqlIP());
+				const std::string& strSqlUser = m_pElementModule->GetPropertyString(strId, NFrame::SqlServer::SqlUser());
+				const std::string& strSqlPwd = m_pElementModule->GetPropertyString(strId, NFrame::SqlServer::SqlPwd());
+				const std::string& strSqlName = m_pElementModule->GetPropertyString(strId, NFrame::SqlServer::SqlName());
+				//const std::string& strName = m_pElementModule->GetPropertyString(strId, NFrame::Server::Name());
+				//const std::string& strIP = m_pElementModule->GetPropertyString(strId, NFrame::Server::IP());
+
+				if (!m_pMysqlModule->AddMysqlServer(nServerID, strIP, strSqlIP, nSqlPort, strSqlName, strSqlUser, strSqlPwd)) {
+					std::ostringstream strLog;
+					strLog << "Cannot init server net, Port = " << nPort;
+					m_pLogModule->LogNormal(NFILogModule::NLL_ERROR_NORMAL, NULL_OBJECT, strLog, __FUNCTION__, __LINE__);
+					NFASSERT(nRet, "Cannot init server net", __FILE__, __FUNCTION__);
+					exit(0);
+				}
+
+			}
+		}
+	}
+
 	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_ROLE_LIST, this, &NFCDBNet_ServerModule::OnRequireRoleListProcess);
 	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_CREATE_ROLE, this, &NFCDBNet_ServerModule::OnCreateRoleGameProcess);
 	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_DELETE_ROLE, this, &NFCDBNet_ServerModule::OnDeleteRoleGameProcess);
 	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_LOAD_ROLE_DATA, this, &NFCDBNet_ServerModule::OnLoadRoleDataProcess);
 	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_SAVE_ROLE_DATA, this, &NFCDBNet_ServerModule::OnSaveRoleDataProcess);
+	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_LOAD_OBJ_DATA, this, &NFCDBNet_ServerModule::OnLoadObjDataProcess);
+	m_pNetModule->AddReceiveCallBack(NFMsg::EGMI_REQ_SAVE_OBJ_DATA, this, &NFCDBNet_ServerModule::OnSaveObjDataProcess);
 
     return true;
 }
@@ -298,5 +336,58 @@ void NFCDBNet_ServerModule::OnSaveRoleDataProcess(const NFSOCK nSockIndex, const
 	pPlayerRedisModule->SavePlayerData(nRoleID, xMsg);
 
 	//m_pNetModule->SendMsgPB(NFMsg::EGMI_ACK_LOAD_ROLE_DATA, xMsg, nSockIndex);
+}
+
+void NFCDBNet_ServerModule::OnLoadObjDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char * msg, const uint32_t nLen)
+{
+	NFGUID nClientID;
+	NFMsg::ReqEnterGameServer xMsg;
+	if (!m_pNetModule->ReceivePB(nMsgID, msg, nLen, xMsg, nClientID))
+	{
+		return;
+	}
+
+	NFGUID nObjID = NFINetModule::PBToNF(xMsg.id());
+
+	std::string strClassName = xMsg.name();
+
+	NFMsg::RoleDataPack xRoleDataxMsg;
+	xRoleDataxMsg.mutable_id()->CopyFrom(xMsg.id());
+
+	NFCCommonMysqlModule* pCommonMysqlModule = (NFCCommonMysqlModule*)(m_pCommonMysqlModule);
+
+	pCommonMysqlModule->LoadObjData(nObjID, strClassName, xRoleDataxMsg);
+
+	m_pNetModule->SendMsgPB(NFMsg::EGMI_ACK_LOAD_OBJ_DATA, xRoleDataxMsg, nSockIndex);
+}
+
+void NFCDBNet_ServerModule::OnSaveObjDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char * msg, const uint32_t nLen)
+{
+	NFGUID nClientID;
+	NFMsg::RoleDataPack xMsg;
+	if (!m_pNetModule->ReceivePB(nMsgID, msg, nLen, xMsg, nClientID))
+	{
+		return;
+	}
+
+	NFGUID nObjID = NFINetModule::PBToNF(xMsg.id());
+
+	std::string strClassName;
+	for (int i = 0; i < xMsg.property().property_string_list_size(); ++i)
+	{
+		const NFMsg::PropertyString& xData = xMsg.property().property_string_list(i);
+
+		if (xData.property_name() == "ClassName")
+		{
+			strClassName = xData.data();
+			break;
+		}
+	}
+
+	NFCCommonMysqlModule* pCommonMysqlModule = (NFCCommonMysqlModule*)(m_pCommonMysqlModule);
+
+	pCommonMysqlModule->SaveObjData(nObjID, strClassName, xMsg);
+
+	m_pNetModule->SendMsgPB(NFMsg::EGMI_ACK_SAVE_OBJ_DATA, xMsg, nSockIndex);
 }
 

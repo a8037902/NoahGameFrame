@@ -301,6 +301,9 @@ void NFCCreateRoleModule::SaveData(const NFGUID & self)
 		}
 
 		m_pNetClientModule->SendSuitByPB(NF_SERVER_TYPES::NF_ST_DB, self.GetData(), NFMsg::EGMI_REQ_SAVE_ROLE_DATA, xDataPack);
+
+		//±£´æÖÁmysql
+		m_pNetClientModule->SendSuitByPB(NF_SERVER_TYPES::NF_ST_DB, self.GetData(), NFMsg::EGMI_REQ_SAVE_OBJ_DATA, xDataPack);
 	}
 }
 

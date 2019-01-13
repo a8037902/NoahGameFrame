@@ -66,6 +66,8 @@
 /_Out/Comm/Release/*.pdb
 /_Out/Comm/Release/*.dll
 
+/_Out/Redis-x64-3.2.100
+
 /_Out/Server/NFDataCfg/Ini/
 /_Out/Server/NFDataCfg/Struct/
 /_Out/Server/NFDataCfg/Proto/

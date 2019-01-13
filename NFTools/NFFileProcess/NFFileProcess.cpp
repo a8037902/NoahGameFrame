@@ -168,7 +168,7 @@ bool NFFileProcess::LoadIniData(MiniExcelReader::Sheet & sheet, ClassData * pCla
 			}
 		}
 	}
-	
+
 	return false;
 }
 
@@ -198,7 +198,7 @@ bool NFFileProcess::LoadDataAndProcessProperty(MiniExcelReader::Sheet & sheet, C
 		}
 	}
 	////////////
-	
+
 	for (std::map<std::string, int>::iterator itProperty = PropertyIndex.begin(); itProperty != PropertyIndex.end(); ++itProperty)
 	{
 		std::string strPropertyName = itProperty->first;
@@ -214,7 +214,7 @@ bool NFFileProcess::LoadDataAndProcessProperty(MiniExcelReader::Sheet & sheet, C
 			std::string descName = itDesc->first;
 			int nRow = itDesc->second;
 
-			
+
 			MiniExcelReader::Cell* pCell = sheet.getCell(nRow, nCol);
 			if (pCell)
 			{
@@ -305,7 +305,7 @@ bool NFFileProcess::LoadDataAndProcessRecord(MiniExcelReader::Sheet & sheet, Cla
 		{
 			MiniExcelReader::Cell* pNameCell = sheet.getCell(nStartRow, dim.firstCol + 1);
 			std::string strRecordName = pNameCell->value;
-			
+
 			////////////
 
 			NFClassRecord* pClassRecord = new NFClassRecord();
@@ -341,7 +341,7 @@ bool NFFileProcess::LoadDataAndProcessRecord(MiniExcelReader::Sheet & sheet, Cla
 		}
 	}
 
-	
+
 	return true;
 }
 
@@ -370,15 +370,15 @@ bool NFFileProcess::SaveForCPP()
 	std::string strFileHead;
 
 	strFileHead = strFileHead
-	+ "// -------------------------------------------------------------------------\n"
-	+ "//    @FileName         :    NFProtocolDefine.hpp\n"
-	+ "//    @Author           :    NFrame Studio\n"
-	+ "//    @Module           :    NFProtocolDefine\n"
-	+ "// -------------------------------------------------------------------------\n\n"
-	+ "#ifndef NF_PR_NAME_HPP\n"
-	+ "#define NF_PR_NAME_HPP\n\n"
-	+ "#include <string>\n"
-	+ "namespace NFrame\n{\n";
+		+ "// -------------------------------------------------------------------------\n"
+		+ "//    @FileName         :    NFProtocolDefine.hpp\n"
+		+ "//    @Author           :    NFrame Studio\n"
+		+ "//    @Module           :    NFProtocolDefine\n"
+		+ "// -------------------------------------------------------------------------\n\n"
+		+ "#ifndef NF_PR_NAME_HPP\n"
+		+ "#define NF_PR_NAME_HPP\n\n"
+		+ "#include <string>\n"
+		+ "namespace NFrame\n{\n";
 
 	fwrite(strFileHead.c_str(), strFileHead.length(), 1, hppWriter);
 	/////////////////////////////////////////////////////
@@ -392,7 +392,7 @@ bool NFFileProcess::SaveForCPP()
 		ClassData* pClassDta = it->second;
 		// cpp
 		std::string strPropertyInfo;
-		
+
 		strPropertyInfo += "\tclass " + strClassName + "\n\t{\n\tpublic:\n";
 		strPropertyInfo += "\t\t//Class name\n\t";
 		strPropertyInfo += "\tstatic const std::string& ThisName(){ static std::string x = \"" + strClassName + "\"; return x; };";
@@ -403,9 +403,9 @@ bool NFFileProcess::SaveForCPP()
 		{
 			//add base class properties
 			strPropertyInfo += "\t\t// IObject\n";
-			
+
 			for (std::map<std::string, NFClassProperty*>::iterator itProperty = pBaseObject->xStructData.xPropertyList.begin();
-					itProperty != pBaseObject->xStructData.xPropertyList.end(); ++itProperty)
+				itProperty != pBaseObject->xStructData.xPropertyList.end(); ++itProperty)
 			{
 				const std::string& strPropertyName = itProperty->first;
 				NFClassProperty* pClassProperty = itProperty->second;
@@ -442,7 +442,7 @@ bool NFFileProcess::SaveForCPP()
 			const std::string& strRecordName = itRecord->first;
 			NFClassRecord* pClassRecord = itRecord->second;
 
-			std::cout << "save for cpp ---> " << strClassName  << "::" << strRecordName << std::endl;
+			std::cout << "save for cpp ---> " << strClassName << "::" << strRecordName << std::endl;
 
 			strRecordInfo += "\t\tclass " + strRecordName + "\n\t\t{\n\t\tpublic:\n";
 			strRecordInfo += "\t\t\t//Class name\n\t";
@@ -591,7 +591,7 @@ bool NFFileProcess::SaveForCS()
 					}
 				}
 			}
-			
+
 
 			strRecordInfo += "\n\t\t}\n";
 
@@ -745,7 +745,7 @@ bool NFFileProcess::SaveForSQL()
 		ClassData* pClassDta = it->second;
 		if (strClassName == "IObject")
 		{
-			continue;
+			//continue;
 		}
 
 		strElementData += "CREATE TABLE IF NOT EXISTS " + pClassDta->xStructData.strClassName + "  (";
@@ -753,7 +753,6 @@ bool NFFileProcess::SaveForSQL()
 		strElementData += " PRIMARY KEY (`ID`)";
 		strElementData += " ) ENGINE=InnoDB DEFAULT CHARSET=utf8; \n";
 	}
-
 
 	//2 fields
 	//ALTER TABLE `Buff` ADD `EffectType` bigint(11) DEFAULT '0' COMMENT '影响属性类型(效果类型)  生命，法力(可组合,叠加)';
@@ -778,54 +777,54 @@ bool NFFileProcess::SaveForSQL()
 			{
 				const std::string& strKey = itDesc->first;
 				const std::string& strValue = itDesc->second;
-				if (strKey=="Type")
+				if (strKey == "Type")
 				{
 					strType = strValue;
 				}
-				else if (strKey=="Save")
+				else if (strKey == "Save")
 				{
 					strSave = strValue;
-				} 
-				else if (strKey=="Cache")
+				}
+				else if (strKey == "Cache")
 				{
 					strCache = strValue;
 				}
-				else if (strKey=="Desc")
+				else if (strKey == "Desc")
 				{
 					strDesc = strValue;
 				}
 			}
 
-			if (strSave=="1" || strCache=="1")
+			if (strSave == "1" || strCache == "1")
 			{
-				std::string strAlter = "\nALTER TABLE `" + strClassName + "` ADD `" + strPropertyName + "`";
+				std::string strAlter = "ALTER TABLE `" + strClassName + "` ADD `" + strPropertyName + "`";
 				//ALTER TABLE `Buff` ADD `EffectType` bigint(11) DEFAULT '0' COMMENT '影响属性类型(效果类型)  生命，法力(可组合,叠加)';
-				if (strType=="int")
+				if (strType == "int")
 				{
 					strAlter += " bigint(11) DEFAULT '0'";
 				}
-				else if (strType=="string")
+				else if (strType == "string")
 				{
 					strAlter += " text COLLATE utf8mb4_unicode_ci  DEFAULT ''";
 				}
-				else if (strType=="float")
+				else if (strType == "float")
 				{
 					strAlter += " double DEFAULT '0.0'";
 				}
-				else if (strType=="object")
+				else if (strType == "object")
 				{
 					strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
 				}
-				else if (strType=="vector2")
+				else if (strType == "vector2")
 				{
 					strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
 				}
-				else if (strType=="vector3")
+				else if (strType == "vector3")
 				{
 					strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
 				}
 
-				strAlter += " COMMENT '" + strDesc + "';";
+				strAlter += " COMMENT '" + strDesc + "'; \n";
 
 				strElementData += strAlter;
 			}
@@ -847,38 +846,87 @@ bool NFFileProcess::SaveForSQL()
 			{
 				const std::string& strKey = itDesc->first;
 				const std::string& strValue = itDesc->second;
-				if (strKey=="Type")
+				if (strKey == "Type")
 				{
 					strType = strValue;
 				}
-				else if (strKey=="Save")
+				else if (strKey == "Save")
 				{
 					strSave = strValue;
-				} 
-				else if (strKey=="Cache")
+				}
+				else if (strKey == "Cache")
 				{
 					strCache = strValue;
 				}
-				else if (strKey=="Desc")
+				else if (strKey == "Desc")
 				{
 					strDesc = strValue;
 				}
 			}
 
-			if (strSave=="1" || strCache=="1")
+			if (strSave == "1" || strCache == "1")
 			{
-				std::string strAlter = "\nALTER TABLE `" + strClassName + "` ADD `" + strRecordName + "`";
+				strElementData += "CREATE TABLE IF NOT EXISTS " + strClassName + strRecordName + "  (";
+				strElementData += " `ID` varchar(128) NOT NULL,";
+				strElementData += " PRIMARY KEY (`ID`)";
+				strElementData += " ) ENGINE=InnoDB DEFAULT CHARSET=utf8; \n";
+
+				std::string strAlter = "ALTER TABLE `" + strClassName + strRecordName + "` ADD `" + strClassName + "ID" + "`";
 				strAlter += " text COLLATE utf8mb4_unicode_ci  DEFAULT ''";
-				strAlter += " COMMENT '" + strDesc + "';";
+				strAlter += " COMMENT '" + strDesc + "'; \n";
 
 				strElementData += strAlter;
+
+				strAlter = "ALTER TABLE `" + strClassName + strRecordName + "` ADD `" + "Row" + "`";
+				strAlter += " INT DEFAULT '0'";
+				strAlter += " COMMENT '" + strDesc + "'; \n";
+
+				strElementData += strAlter;
+
+				for (std::map<std::string, NFClassRecord::RecordColDesc*>::iterator itCol = xRecordData->colList.begin();
+					itCol != xRecordData->colList.end(); ++itCol)
+				{
+					const std::string& strTag = itCol->first;
+					const std::string& strType = itCol->second->type;
+
+					strAlter = "ALTER TABLE `" + strClassName + strRecordName + "` ADD `" + strTag + "`";
+					//ALTER TABLE `Buff` ADD `EffectType` bigint(11) DEFAULT '0' COMMENT '影响属性类型(效果类型)  生命，法力(可组合,叠加)';
+					if (strType == "int")
+					{
+						strAlter += " bigint(11) DEFAULT '0'";
+					}
+					else if (strType == "string")
+					{
+						strAlter += " text COLLATE utf8mb4_unicode_ci  DEFAULT ''";
+					}
+					else if (strType == "float")
+					{
+						strAlter += " double DEFAULT '0.0'";
+					}
+					else if (strType == "object")
+					{
+						strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
+					}
+					else if (strType == "vector2")
+					{
+						strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
+					}
+					else if (strType == "vector3")
+					{
+						strAlter += " varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT ''";
+					}
+
+					strAlter += " COMMENT '" + strDesc + "'; \n";
+
+					strElementData += strAlter;
+				}
 			}
 		}
 	}
-	
+
 	fwrite(strElementData.c_str(), strElementData.length(), 1, iniWriter);
 
-	return true;
+	return false;
 }
 
 bool NFFileProcess::SaveForStruct()
@@ -966,7 +1014,7 @@ bool NFFileProcess::SaveForStruct()
 				}
 
 			}
-			
+
 			strElementData += "\t\t</Record>\n";
 			fwrite(strElementData.c_str(), strElementData.length(), 1, structWriter);
 		}
