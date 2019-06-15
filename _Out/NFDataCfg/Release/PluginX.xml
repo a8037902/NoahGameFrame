@@ -84,6 +84,8 @@
 		<Plugin Name="NFDBLogicPlugin" />
 		<Plugin Name="NFActorPlugin" />
 		<Plugin Name="NFNoSqlPlugin" />
+		<Plugin Name="NFMysqlPlugin" />
+		<Plugin Name="NFDBMysqlLogicPlugin" />
 		<Plugin Name="NFSecurityPlugin" />
 	</DBServer>
 </XML>

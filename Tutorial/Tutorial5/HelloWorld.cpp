@@ -39,8 +39,8 @@ bool NFHelloWorld::Init()
 
 bool NFHelloWorld::AfterInit()
 {
-	m_pScheduleModule->AddSchedule(NFGUID(0, 1), "OnHeartBeat1", this, &NFHelloWorld::OnHeartBeat, 5.0f, 10);
-	m_pScheduleModule->AddSchedule(NFGUID(0, 1), "OnHeartBeat2", this, &NFHelloWorld::OnHeartBeat, 5.0f, 10);
+	//m_pScheduleModule->AddSchedule(NFGUID(0, 1), "OnHeartBeat1", this, &NFHelloWorld::OnHeartBeat, 5.0f, 10);
+	//m_pScheduleModule->AddSchedule(NFGUID(0, 1), "OnHeartBeat2", this, &NFHelloWorld::OnHeartBeat, 5.0f, 10);
 
 	std::cout << "Hello, world, Init" << std::endl;
 	//http://127.0.0.1/json

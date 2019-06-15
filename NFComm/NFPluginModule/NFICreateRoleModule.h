@@ -34,7 +34,7 @@ class NFICreateRoleModule
 {
 
 public:
-
+	virtual void SaveDataToMySql(const NFGUID & self) = 0;
 
 };
 

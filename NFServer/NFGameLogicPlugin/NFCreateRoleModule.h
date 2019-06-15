@@ -53,6 +53,7 @@ public:
     virtual bool Execute();
     virtual bool AfterInit();
 
+	virtual void SaveDataToMySql(const NFGUID & self);
 protected:
 	void OnReqiureRoleListProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
 	void OnReposeRoleListProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);

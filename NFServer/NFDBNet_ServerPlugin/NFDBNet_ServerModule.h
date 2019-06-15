@@ -41,6 +41,8 @@
 #include "NFComm/NFPluginModule/NFIWorldToMasterModule.h"
 #include "NFComm/NFPluginModule/NFIAccountRedisModule.h"
 #include "NFComm/NFPluginModule/NFIPlayerRedisModule.h"
+#include "NFComm/NFPluginModule/NFICommonMysqlModule.h"
+#include "NFComm/NFPluginModule/NFIMysqlModule.h"
 
 class NFIDBNet_ServerModule : public NFIModule
 {
@@ -75,6 +77,8 @@ protected:
 	void OnDeleteRoleGameProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
 	void OnLoadRoleDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
 	void OnSaveRoleDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
+	void OnLoadObjDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
+	void OnSaveObjDataProcess(const NFSOCK nSockIndex, const int nMsgID, const char* msg, const uint32_t nLen);
 
 private:
 	void InitAllHomeScene();
@@ -90,6 +94,8 @@ protected:
     NFILogModule* m_pLogModule;
 	NFINetModule* m_pNetModule;
 	NFINetClientModule* m_pNetClientModule;
+	NFIMysqlModule* m_pMysqlModule;
+	NFICommonMysqlModule* m_pCommonMysqlModule;
 };
 
 #endif

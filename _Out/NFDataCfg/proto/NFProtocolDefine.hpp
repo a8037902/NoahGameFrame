@@ -1064,7 +1064,7 @@ namespace NFrame
 		static const std::string& AtkDis(){ static std::string x = "AtkDis"; return x; };// float
 		static const std::string& ConsumeProperty(){ static std::string x = "ConsumeProperty"; return x; };// string
 		static const std::string& ConsumeType(){ static std::string x = "ConsumeType"; return x; };// int
-		static const std::string& ConsumeValue(){ static std::string x = "ConsumeValue"; return x; };// string
+		static const std::string& ConsumeValue(){ static std::string x = "ConsumeValue"; return x; };// int
 		static const std::string& CoolDownTime(){ static std::string x = "CoolDownTime"; return x; };// float
 		static const std::string& DamageCount(){ static std::string x = "DamageCount"; return x; };// int
 		static const std::string& DamageDistance(){ static std::string x = "DamageDistance"; return x; };// float

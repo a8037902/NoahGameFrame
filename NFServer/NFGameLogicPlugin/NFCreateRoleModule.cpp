@@ -310,6 +310,34 @@ int NFCreateRoleModule::SaveDataOnTime(const NFGUID & self, const std::string & 
 	return 0;
 }
 
+void NFCreateRoleModule::SaveDataToMySql(const NFGUID & self)
+{
+	NF_SHARE_PTR<NFIObject> xObject = m_pKernelModule->GetObject(self);
+	if (xObject)
+	{
+		NF_SHARE_PTR<NFIPropertyManager> xPropManager = xObject->GetPropertyManager();
+		NF_SHARE_PTR<NFIRecordManager> xRecordManager = xObject->GetRecordManager();
+		NFMsg::RoleDataPack xDataPack;
+
+		*xDataPack.mutable_id() = NFINetModule::NFToPB(self);
+
+		*(xDataPack.mutable_property()->mutable_player_id()) = NFINetModule::NFToPB(self);
+		*(xDataPack.mutable_record()->mutable_player_id()) = NFINetModule::NFToPB(self);
+
+		if (xPropManager)
+		{
+			ConvertPropertyManagerToPB(xPropManager, xDataPack.mutable_property());
+		}
+
+		if (xRecordManager)
+		{
+			ConvertRecordManagerToPB(xRecordManager, xDataPack.mutable_record());
+		}
+
+		m_pNetClientModule->SendSuitByPB(NF_SERVER_TYPES::NF_ST_DB, self.GetData(), NFMsg::EGMI_REQ_SAVE_OBJ_DATA, xDataPack);
+	}
+}
+
 bool NFCreateRoleModule::Shut()
 {
     return true;
