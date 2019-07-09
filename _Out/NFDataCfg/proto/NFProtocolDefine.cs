@@ -135,6 +135,29 @@ namespace NFrame
 		// Record
 
 	}
+	public class Client
+	{
+		//Class name
+		public static readonly String ThisName = "Client";
+		// IObject
+		public static readonly String ClassName = "ClassName";// string
+		public static readonly String ConfigID = "ConfigID";// string
+		public static readonly String GroupID = "GroupID";// int
+		public static readonly String ID = "ID";// string
+		public static readonly String Position = "Position";// vector3
+		public static readonly String SceneID = "SceneID";// int
+		// Property
+		public static readonly String Account = "Account";// string
+		public static readonly String ClientServerID = "ClientServerID";// int
+		public static readonly String GameServerID = "GameServerID";// int
+		public static readonly String LoginServerID = "LoginServerID";// int
+		public static readonly String Password = "Password";// string
+		public static readonly String RoleID = "RoleID";// int
+		public static readonly String WebPort = "WebPort";// int
+		public static readonly String WorldServerID = "WorldServerID";// int
+		// Record
+
+	}
 	public class ConsumeData
 	{
 		//Class name

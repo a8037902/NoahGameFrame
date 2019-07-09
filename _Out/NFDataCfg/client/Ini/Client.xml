@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<XML>
+	<Object Id="Client_1" Account="test2" ClientServerID="100" GameServerID="6" LoginServerID="4" Password="123456" RoleID="0" WebPort="0" WorldServerID="7" />
+	<Object Id="Client_2" Account="test3" ClientServerID="101" GameServerID="6" LoginServerID="4" Password="123456" RoleID="0" WebPort="0" WorldServerID="7" />
+</XML>

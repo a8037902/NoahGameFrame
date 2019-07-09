@@ -129,6 +129,29 @@ package nframe;
 		// Record
 
 	}
+	public class Client
+	{
+		//Class name
+		public static final String ThisName = "Client";
+		// IObject
+		public static final String ClassName = "ClassName";// string
+		public static final String ConfigID = "ConfigID";// string
+		public static final String GroupID = "GroupID";// int
+		public static final String ID = "ID";// string
+		public static final String Position = "Position";// vector3
+		public static final String SceneID = "SceneID";// int
+		// Property
+		public static final String Account = "Account";// string
+		public static final String ClientServerID = "ClientServerID";// int
+		public static final String GameServerID = "GameServerID";// int
+		public static final String LoginServerID = "LoginServerID";// int
+		public static final String Password = "Password";// string
+		public static final String RoleID = "RoleID";// int
+		public static final String WebPort = "WebPort";// int
+		public static final String WorldServerID = "WorldServerID";// int
+		// Record
+
+	}
 	public class ConsumeData
 	{
 		//Class name

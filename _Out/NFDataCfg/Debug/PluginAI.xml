@@ -1,0 +1,9 @@
+<XML>	
+	<AIServer>
+		<Plugin Name="NFNetPlugin" />
+		<Plugin Name="NFKernelPlugin" />
+		<Plugin Name="NFConfigPlugin" />
+		<Plugin Name="NFClientPlugin" />
+		<Plugin Name="NFLogPlugin" />
+	</AIServer>
+</XML>

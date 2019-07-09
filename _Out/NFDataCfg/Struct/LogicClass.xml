@@ -4,6 +4,7 @@
 		<Class Id="Buff"	Path="NFDataCfg/Struct/Buff.xml"	InstancePath="NFDataCfg/Ini/Buff.xml"	/>
 		<Class Id="Clan"	Path="NFDataCfg/Struct/Clan.xml"	InstancePath="NFDataCfg/Ini/Clan.xml"	/>
 		<Class Id="ClanConfig"	Path="NFDataCfg/Struct/ClanConfig.xml"	InstancePath="NFDataCfg/Ini/ClanConfig.xml"	/>
+		<Class Id="Client"	Path="NFDataCfg/Struct/Client.xml"	InstancePath="NFDataCfg/Ini/Client.xml"	/>
 		<Class Id="ConsumeData"	Path="NFDataCfg/Struct/ConsumeData.xml"	InstancePath="NFDataCfg/Ini/ConsumeData.xml"	/>
 		<Class Id="DescData"	Path="NFDataCfg/Struct/DescData.xml"	InstancePath="NFDataCfg/Ini/DescData.xml"	/>
 		<Class Id="EffectData"	Path="NFDataCfg/Struct/EffectData.xml"	InstancePath="NFDataCfg/Ini/EffectData.xml"	/>

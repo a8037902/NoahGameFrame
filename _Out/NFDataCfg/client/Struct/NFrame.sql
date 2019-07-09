@@ -72,6 +72,9 @@ ALTER TABLE `Clan_Clan_WarList` ADD `CreateTime` datetime NULL DEFAULT CURRENT_T
 CREATE TABLE IF NOT EXISTS ClanConfig  ( `ID` varchar(128) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
 ALTER TABLE `ClanConfig` ADD `CreateTime` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ; 
 ################################################################################
+CREATE TABLE IF NOT EXISTS Client  ( `ID` varchar(128) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
+ALTER TABLE `Client` ADD `CreateTime` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ; 
+################################################################################
 CREATE TABLE IF NOT EXISTS ConsumeData  ( `ID` varchar(128) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
 ALTER TABLE `ConsumeData` ADD `Diamond` bigint(11) DEFAULT '0' COMMENT '钻石'; 
 ALTER TABLE `ConsumeData` ADD `EXP` bigint(11) DEFAULT '0' COMMENT '经验获得,如果是怪物，则是掉落经验'; 
